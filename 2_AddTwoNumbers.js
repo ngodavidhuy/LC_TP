@@ -69,3 +69,15 @@ list2.next = new ListNode(6);
 list2.next.next = new ListNode(4);
 
 console.log(addTwoNumbers(list1, list2));
+
+
+/* 
+TIME COMPLEXITY:
+
+  O(max(m,n)) depends on the longer linkedlist
+
+
+SPACE COMPLEXITY:
+  O(max(m,n) + 1) the length of the new list
+
+*/
