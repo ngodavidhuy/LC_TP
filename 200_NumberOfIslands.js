@@ -29,17 +29,11 @@ var numIslands = function(grid) {
   let islands = 0;
 
   let markIslandsSeen = (x, y) => {
-    if (!grid[x] || !grid[x][y] || grid[x][y] === '2' || grid[x][y] === '0') {
-      return;
-    }
-
-    if (grid[x][y] === '1') {
-      grid[x][y] = 2;
-      markIslandsSeen(x - 1, y)
-      markIslandsSeen(x + 1, y);
-      markIslandsSeen(x, y - 1)
-      markIslandsSeen(x, y + 1);
-    }
+    grid[x][y] = '2';
+    if (grid[x - 1] !== undefined && grid[x - 1][y] !== undefined && grid[x - 1][y] === '1') { markIslandsSeen(x - 1, y); }
+    if (grid[x + 1] !== undefined && grid[x + 1][y] !== undefined && grid[x + 1][y] === '1') { markIslandsSeen(x + 1, y); }
+    if (grid[x] !== undefined && grid[x][y - 1] !== undefined && grid[x][y - 1] === '1') { markIslandsSeen(x, y - 1); }
+    if (grid[x] !== undefined && grid[x][y + 1] !== undefined && grid[x][y + 1] === '1') { markIslandsSeen(x, y + 1); }
   }
 
   for (let i = 0; i < grid.length; i++) {
@@ -52,7 +46,6 @@ var numIslands = function(grid) {
       }
     }
   }
-
   return islands;
 };
 
@@ -80,3 +73,14 @@ console.log(numIslands([
   ['0','0','1','0','0'],
   ['0','0','0','1','1']
 ]));
+
+/* 
+TIME COMPLEXITY:
+
+  O(MxN) Depends on how large the matrix is
+
+
+SPACE COMPLEXITY:
+  O(1) Only original array is mutated
+
+*/
