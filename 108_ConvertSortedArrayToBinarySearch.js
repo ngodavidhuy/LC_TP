@@ -48,3 +48,15 @@ var sortedArrayToBST = function(nums) {
 console.log(sortedArrayToBST([-10,-3,0,5,9]));
 
 
+/* 
+TIME COMPLEXITY:
+
+  O(N)
+
+
+SPACE COMPLEXITY:
+  O(N)
+
+*/
+
+
