@@ -27,9 +27,9 @@ var isInterleave = function(s1, s2, s3) {
     for (let j = 0; j <= s1.length; j++) {
       if (i === 0 && j === 0) {
         row.push(true);
-      } else if (i === 0 && row[j - 1] !== false) {
+      } else if (i === 0 && row[j - 1]) {
         row.push(s1[j - 1] === s3[j - 1]);
-      } else if (j === 0 && grid[i - 1][0] !== false) {
+      } else if (j === 0 && grid[i - 1][0]) {
         row.push(s2[i - 1] === s3[i - 1]);
       } else {
         row.push(false);
