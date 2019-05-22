@@ -40,49 +40,136 @@ The graph is undirected: if any element j is in graph[i], then i will be in grap
  * @return {boolean}
  */
 
-var isBipartite = function(graph) {
-  let colors = new Map();
-  colors.set(0, 0);
-
-  for (let node = 0; node < graph.length; node++) {
-    if (!DFS(node)) {
-      return false;
+function isBipartite(graph) {
+  let constructedGraph = createGraph(graph);
+  let evens = [];
+  let odds = [];
+  for (let node of constructedGraph.getNodes()) {
+    if (node.getState() === 'UNVISITED') {
+      let groups = getBipartiteGroups(node);
+      if (groups === null) return false;
+      evens.push(...groups[0]);
+      odds.push(...groups[1]);
     }
   }
-  return true;
 
-  function DFS(start) {
-    let neighbors = graph[start];
-    
-    for (let i = 0; i < neighbors.length; i++) {
-      let node = neighbors[i];
-      let color = colors.get(node);
-      let startColor = colors.get(start);
-
-      if (color !== undefined && color === startColor) { return false; }
-      if (color !== undefined) { continue; } 
-
-      startColor === 0 ? colors.set(node, 1) : colors.set(node, 0);
-      if (!DFS(node)) { return false; }
-    }
-    return true;
-  }
+  return [evens, odds];
 };
 
-console.log(isBipartite([[1],[0],[4],[4],[2,3]]));
+function createGraph(array) {
+  let graph = new Graph(array);
+  for (let i = 0; i < array.length; i++) {
+    let edges = array[i];
+    for (let e of edges) {
+      graph.addEdge(i, e);
+    }
+  }
+  return graph;
+}
+
+function getBipartiteGroups(startNode) {
+  let queue = [startNode];
+  let oddNodes = [];
+  let evenNodes = [];
+
+  startNode.setLevel(0);
+  startNode.setState('VISITING');
+
+  while (queue.length) {
+    let current = queue.shift();
+    if (current.getLevel() % 2 === 0) {
+      evenNodes.push(current);
+    } else {
+      oddNodes.push(current);
+    }
+
+    for (let neighbor of current.getNeighbors()) {
+      if (neighbor.getState() === 'UNVISITED') {
+        neighbor.setLevel(current.getLevel() + 1);
+        queue.push(neighbor);
+        neighbor.setState('VISITING');
+      } else if (neighbor.getLevel() === current.getLevel()) {
+        return null;
+      }
+    }
+    current.setState('VISITED');
+  }
+
+  return [evenNodes, oddNodes];
+}
+
+class Graph {
+  constructor(vertices) {
+    this.nodes = [];
+    this.graph = {};
+    for (let i = 0; i < vertices.length; i++) {
+      this.addNode(i);
+    }
+  }
+
+  addEdge(n1, n2) {
+    let from = this.getNode(n1);
+    let to = this.getNode(n2);
+    from.neighbors.push(to);
+  }
+
+  getNode(node) {
+    return this.graph[node];
+  }
+
+  getNodes() {
+    return this.nodes;
+  }
+
+  addNode(node) {
+    if (!this.graph[node]) {
+      this.graph[node] = new Node(node);
+      this.nodes.push(this.graph[node]);
+    }
+  }
+
+  
+}
+
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.states = {
+      'UNVISITED': 'UNVISITED',
+      'VISITING': 'VISITING',
+      'VISITED': 'VISITED',
+    };
+    this.state = 'UNVISITED';
+    this.level = -1;
+    this.neighbors = [];
+  }
+
+  setLevel(level) {
+    this.level = level;
+  }
+
+  getLevel() {
+    return this.level;
+  }
+
+  setState(state) {
+    if (this.states[state] !== undefined) {
+      this.state = state;
+    }
+    return;
+   }
+  
+   getState() {
+     return this.state;
+   }
+
+  getNeighbors() {
+    return this.neighbors;
+  }
+}
+// console.log(isBipartite([[1],[0],[4],[4],[2,3]]));
 console.log(isBipartite([[1,3], [0,2], [1,3], [0,2]]));
-console.log(isBipartite([[1,2,3], [0,2], [0,1,3], [0,2]]));
-console.log(isBipartite([[1],[0,3],[3],[1,2]]));
-console.log(isBipartite([[3],[2,4],[1],[0,4],[1,3]]));
+// console.log(isBipartite([[1,2,3], [0,2], [0,1,3], [0,2]]));
+// console.log(isBipartite([[1],[0,3],[3],[1,2]]));
+// console.log(isBipartite([[3],[2,4],[1],[0,4],[1,3]]));
 
-/* 
-TIME COMPLEXITY:
-
-  O(V^2)
-
-
-SPACE COMPLEXITY:
-  O(V + E)
-
-  https://www.quora.com/Why-is-the-complexity-of-DFS-O-V+E
-*/
