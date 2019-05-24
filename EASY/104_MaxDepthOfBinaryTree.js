@@ -35,11 +35,11 @@ function TreeNode(val) {
 }
 
 function maxDepth(root) {
+  if (!root) return 0;
   return height(root, 0, -1);
 };
 
 function height(node, pDepth, maxDepth) {
-  if (!node) return;
   let nDepth = pDepth + 1;
   if (nDepth > maxDepth) maxDepth = nDepth;
   if (node.left) maxDepth = height(node.left, nDepth, maxDepth);
@@ -55,5 +55,12 @@ test1.right.right = new TreeNode(7);
 
 console.log(maxDepth(test1));
 
+
+//OR
+
+function maxDepth(root) {
+  if (!root) return 0;
+  return 1 + Math.max(maxDepth(root.left), maxDepth(root.right));
+};
 
 
