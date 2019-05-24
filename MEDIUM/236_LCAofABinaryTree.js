@@ -53,6 +53,7 @@ test1.right.right = new TreeNode(7);
 test1.right.right.left = new TreeNode(50);
 test1.right.right.right = new TreeNode(51);
 
+//BT
 const lowestCommonAncestor = function(node, p, q) {
   if (!node) return null;
   if (node === p || node === q) return node;
@@ -60,6 +61,19 @@ const lowestCommonAncestor = function(node, p, q) {
   const right = lowestCommonAncestor(node.right, p, q);
   if (left && right) return node;
   return left ? left : right;
+};
+
+//BST
+const lowestCommonAncestor = function(node, p, q) {
+  while (node !== null) {
+      if (node.val < p.val && node.val < q.val) {
+          node = node.right;
+      } else if (node.val > p.val && node.val > q.val) {
+          node = node.left;
+      } else {
+          return node;
+      }
+  }
 };
 
 
