@@ -39,16 +39,6 @@ var getPermutation = function(n, k) {
   return results[k - 1].join("");
 };
 
-
-// function findPermutations(arr, size) {
-//   if (!arr || !size || size > arr.length) return [];
-//   let buffer = new Array(size);
-//   let isInBuffer = new Array(size).fill(false);
-//   let results = [];
-//   generatePermutation(arr, buffer, 0, isInBuffer, results);
-//   return results;
-// }
-
 function generatePermutation(arr, buffer, bufferIdx, isInBuffer, k, counter, results) {
   if (bufferIdx === buffer.length) {
     results.push(buffer.slice());
