@@ -20,24 +20,62 @@ If there is such window, you are guaranteed that there will always be only one u
 // O(M + N) TIME | O(M + N) SPACE
 var minWindow = function(s, t) {
     let dict = {};
+
     for (let char of t) !dict[char] ? dict[char] = 1 : dict[char]++;
 
     let counter = t.length, l = 0, r = 0, start = 0, end = 0, distance = Infinity;
 
     while (r < s.length) {
-      if (dict[s[r++]]-- > 0) counter--;
+      if (dict[s[r]] > 0) counter--;
+      if (dict[s[r]] !== undefined) dict[s[r]]--;
+
       while (counter === 0) {
         if (r - l < distance) {
           distance = r - l;
           start = l, end = r;
         }
-        if (dict[s[l++]]++ === 0) counter++;
+        if (dict[s[l]] === 0) {
+          counter++;
+          
+        }
+        if (dict[s[l]] < 1) dict[s[l]]++;
+ 
+        l++;
       }
-    }
 
-    console.log(dict);
-    return distance === Infinity ? "" : s.substring(start, end);
+      r++;
+    }
+    
+    return distance === Infinity ? "" : s.slice(start, end + 1);
 };
+
+// var minWindow = function(s, t) {
+//   let dict = new Map();
+//   for (let char of t) !dict.has(char) ? dict.set(char, 1) : dict.set(char, dict.get(char) + 1);
+//   let counter = t.length, l = 0, r = 0, start = 0, end = 0, distance = Infinity;
+
+//   while (r < s.length) {
+//     let char = s[r];
+//     if (dict.get(char) > 0) counter--;
+//     if (dict.has(char)) dict.set(char, dict.get(char) - 1);
+//     while (counter === 0) {
+//       if (r - l < distance) {
+//         distance = start - end, start = l, end = r;
+//       }
+//       if (dict.get(s[l]) === 0) {
+//         counter++;
+//       }
+  
+//       if (dict.get(s[l]) < 1)  {
+//         dict.set(s[l], dict.get(s[l]) + 1);
+//       }
+//       l++;
+//     }
+//     r++;
+//   }
+//   console.log(dict);
+//   return distance === Infinity ? "" : s.slice(start, end + 1);
+// };
 
 // function minWindow(s, t) {
 //   let dict = {};
