@@ -23,21 +23,19 @@ var minWindow = function(s, t) {
 
     for (let char of t) !dict[char] ? dict[char] = 1 : dict[char]++;
 
-    let counter = t.length, l = 0, r = 0, start = 0, end = 0, distance = Infinity;
+    let counter = t.length, l = 0, r = 0, start = 0, end = 0, distance = s.length + 1;
 
     while (r < s.length) {
       if (dict[s[r]] > 0) counter--;
       if (dict[s[r]] !== undefined) dict[s[r]]--;
-
+      console.log(l, r, dict);
       while (counter === 0) {
         if (r - l < distance) {
           distance = r - l;
           start = l, end = r;
         }
-        if (dict[s[l]] === 0) {
-          counter++;
-          
-        }
+
+        if (dict[s[l]] === 0) counter++;
         if (dict[s[l]] < 1) dict[s[l]]++;
  
         l++;
@@ -45,8 +43,8 @@ var minWindow = function(s, t) {
 
       r++;
     }
-    
-    return distance === Infinity ? "" : s.slice(start, end + 1);
+    // console.log(dict);
+    return distance === s.length + 1 ? "" : s.slice(start, end + 1);
 };
 
 // var minWindow = function(s, t) {
@@ -108,3 +106,4 @@ var minWindow = function(s, t) {
 // }
 
 console.log(minWindow("ADOBECODEBANC", "ABC"))
+// console.log(minWindow("a", "aa"))
