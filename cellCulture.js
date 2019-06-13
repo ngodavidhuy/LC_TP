@@ -5,7 +5,7 @@ var cellCultureAfterKDays = function(cells, N) {
   let left = cells[0];
 
   while (N > 0) {
-    let prevCell = ;
+    let prevCell = null;
     cells[1]
     for (let i = 0; i < cells.length; i++) {
       prevCell === cells[i + 1] ? 
